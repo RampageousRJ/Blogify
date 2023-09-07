@@ -2,6 +2,7 @@ from flask import Flask,render_template,flash,request,redirect,url_for
 from blogify import app,db
 from blogify.forms import *
 from blogify.models import Users
+from werkzeug.security import generate_password_hash,check_password_hash
 
 @app.route('/')
 @app.route('/home')
@@ -30,13 +31,16 @@ def add_user():
     if form.validate_on_submit():
         user = Users.query.filter_by(email=form.email.data).first()
         if user is None:
-            u1 = Users(name=form.name.data,email=form.email.data,color=form.color.data)
+            hpw = generate_password_hash(form.password_hash.data,"sha256")
+            u1 = Users(name=form.name.data,email=form.email.data,color=form.color.data,password_hash=hpw)
             db.session.add(u1)
             db.session.commit()
         form.name.data = ""
         form.email.data = ""
         form.color.data = ""
+        form.password_hash=""
         flash("Registered Successfully!",category='success')
+        return redirect(url_for('add_user'))
     curr_users =Users.query.order_by(Users.date_added)
     return render_template('add_user.html',form=form,curr_users=curr_users)
 

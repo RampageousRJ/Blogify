@@ -8,7 +8,8 @@ class Users(db.Model):
     email = db.Column(db.String(120),nullable=False,unique=True)
     color = db.Column(db.String(120))
     date_added = db.Column(db.DateTime,default=datetime.utcnow)
-    password_hash = db.Column(db.String(128))
+    password_hash = db.Column(db.String(128),nullable=False)
+    password_hash2 = db.Column(db.String(128))
     
     @property
     def password(self):
