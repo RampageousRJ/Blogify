@@ -17,6 +17,9 @@
                 {{form.email.label()}}
                 {{form.email(class='form-control', placeholder='Email Address')}}
                 <br>
+                {{form.color.label()}}
+                {{form.color(class='form-control', placeholder='Favourite Color')}}
+                <br>
                 <div class="form-group text-center">
                     {{ form.submit(class = 'btn btn-success') }}
                 </div>
@@ -33,7 +36,9 @@
                 <th scope="col">ID</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
+                <th scope="col">Favourite Color</th>
                 <th scope="col">Date-Added</th>
+                <th scope="col">Options</th>
             </tr>
         </thead>
         <tbody>
@@ -42,7 +47,9 @@
                     <td>{{ user.id }}</td>  
                     <td><a href="{{url_for('update',id=user.id)}}">{{ user.name }}</a></td>
                     <td>{{ user.email }}</td>
+                    <td>{{ user.color }}</td>
                     <td>{{ user.date_added }}</td>
+                    <td><a href="{{url_for('delete',id=user.id)}}" class="btn btn-danger">Delete</a></td>
                 </tr>
             {% endfor %}
         </tbody>

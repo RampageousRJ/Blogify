@@ -8,17 +8,26 @@
     <br />
     <div class="shadow p-3 mb-5 bg-dark rounded">
         <h3 class="text-center">Update User</h3>
-        <form action='update/{{updated_name.id}}' method="POST" class='form-register'>
+        <form action='{{updated_name.id}}' method="POST" class='form-register'>
             <div class="form-labels">
                 {{form.hidden_tag()}}
                 {{form.name.label()}}
                 {{form.name(class='form-control', value=updated_name.name)}}
-                <br>
+                <br> 
                 {{form.email.label()}}
                 {{form.email(class='form-control', value=updated_name.email)}}
                 <br>
-                <div class="form-group text-center">
-                    {{ form.submit(class = 'btn btn-success') }}
+                {{form.color.label()}}
+                {{form.color(class='form-control', value=updated_name.color)}}
+                <br>
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-2 text-center">
+                        {{ form.submit(class = 'btn btn-success') }}
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <a href="{{url_for('delete',id=updated_name.id)}}" class='btn btn-danger'>Delete</a>
+                    </div>
                 </div>
             </div> 
         </form>
@@ -26,25 +35,4 @@
     <br />
     <br />
     <br />
-    <h3 class="text-center">User List</h3>
-    <table class="table table-hover table-dark table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Date-Added</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in curr_users %}
-                <tr>
-                    <td>{{ user.id }}</td>  
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.date_added }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 {% endblock %}

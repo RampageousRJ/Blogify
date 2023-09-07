@@ -1,4 +1,4 @@
-from flask import Flask,render_template,flash,request
+from flask import Flask,render_template,flash,request,redirect,url_for
 from blogify import app,db
 from blogify.forms import *
 from blogify.models import Users
@@ -30,11 +30,12 @@ def add_user():
     if form.validate_on_submit():
         user = Users.query.filter_by(email=form.email.data).first()
         if user is None:
-            u1 = Users(name=form.name.data,email=form.email.data)
+            u1 = Users(name=form.name.data,email=form.email.data,color=form.color.data)
             db.session.add(u1)
             db.session.commit()
         form.name.data = ""
         form.email.data = ""
+        form.color.data = ""
         flash("Registered Successfully!",category='success')
     curr_users =Users.query.order_by(Users.date_added)
     return render_template('add_user.html',form=form,curr_users=curr_users)
@@ -46,14 +47,28 @@ def update(id):
     if request.method=='POST':
         updated_name.name = request.form['name']
         updated_name.email = request.form['email']
+        updated_name.color = request.form['color']
         try:
             db.session.commit()
             flash("User Updated Successfully")
-            return render_template('update.html',form=form,updated_name=updated_name)
+            return redirect(url_for('add_user'))
         except:
             flash('ERROR! Something went wrong...')
-            return render_template("update.html",form=form,updated_name=updated_name)
+            return redirect(url_for('add_user'))
     return render_template("update.html",form=form,updated_name=updated_name)
+
+@app.route('/delete/<int:id>')
+def delete(id):
+    delete_user = Users.query.get_or_404(id)
+    curr_users =Users.query.order_by(Users.date_added)
+    form = UserForm()
+    try:
+        db.session.delete(delete_user)
+        db.session.commit()
+        flash("User Deleted Successfully!")
+    except:
+        flash("Error! Please try again!")
+    return redirect(url_for('add_user'))
 
 # Page Not Found
 @app.errorhandler(404)
