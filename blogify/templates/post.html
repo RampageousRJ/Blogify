@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Post
+{% endblock %}
+
+{% block body %}
+
+    <h1 class"text-left">Blogs</h1>
+    <br>
+    <div class="card bg-dark">
+        <div class="card-header">
+            {{ post.title }}
+        </div>
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <p>{{ post.content }}</p>
+            <footer class="blockquote-footer"> <cite title="Author name">{{ post.author }}</cite> added on {{ post.date_added }}</footer>
+          </blockquote>
+        </div>
+    </div>
+    <br>
+    <a href="{{url_for('posts')}}" class="btn btn-outline-light" ><i class='fas fa-angle-left'></i> All Posts</a>
+    <a href="{{url_for('edit_post',id=post.id)}}" class="btn btn-outline-info"> Edit Posts</a>
+    <br>
+    
+{% endblock %}

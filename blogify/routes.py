@@ -1,7 +1,7 @@
 from flask import Flask,render_template,flash,request,redirect,url_for
 from blogify import app,db
 from blogify.forms import *
-from blogify.models import Users
+from blogify.models import *
 from werkzeug.security import generate_password_hash,check_password_hash
 
 @app.route('/')
@@ -73,6 +73,46 @@ def delete(id):
     except:
         flash("Error! Please try again!")
     return redirect(url_for('add_user'))
+
+@app.route('/add-post',methods=['GET','POST'])
+def add_post():
+    form  = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data,content=form.content.data,author=form.author.data,slug=form.slug.data)
+        db.session.add(post)
+        db.session.commit()
+        flash("Blog Post added successfully!")
+        return redirect(url_for('add_post'))
+    return render_template('add_post.html',form=form)
+
+@app.route('/posts')
+def posts():
+    posts = Post.query.order_by(Post.date_added)
+    return render_template("posts.html",posts=posts)
+
+@app.route('/posts/<int:id>')
+def post(id):
+    post = Post.query.get_or_404(id)
+    return render_template('post.html',post=post)
+
+@app.route('/posts/edit/<int:id>',methods=['GET','POST'])
+def edit_post(id):
+    post = Post.query.get_or_404(id)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.author = form.author.data
+        post.slug = form.slug.data
+        post.content = form.content.data
+        db.session.add(post)
+        db.session.commit()
+        flash("Post updated successfully!")
+        return redirect(url_for('post',id=post.id))
+    form.title.data = post.title
+    form.author.data = post.author
+    form.slug.data = post.slug
+    form.content.data = post.content
+    return render_template('edit_post.html',form=form)
 
 # Page Not Found
 @app.errorhandler(404)

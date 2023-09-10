@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Add Blog
+{% endblock %}
+
+{% block body %}
+    <br />
+    <div class="shadow p-3 mb-5 bg-dark rounded">
+        <h3 class="text-center">Add Blog Post</h3>
+        <form method="POST" class='form-register'>
+            <div class="form-labels">
+                {{form.hidden_tag()}}
+                {{form.title.label()}}
+                {{form.title(class='form-control', placeholder='Title')}}
+                <br>
+                {{form.author.label()}}
+                {{form.author(class='form-control', placeholder='Author')}}
+                <br>
+                {{form.slug.label()}}
+                {{form.slug(class='form-control', placeholder='Slug')}}
+                <br>
+                {{form.content.label()}}
+                {{form.content(class='form-control',rows=5, placeholder='Content')}}
+                <br>
+                <div class="form-group text-center">
+                    {{ form.submit(class = 'btn btn-success') }}
+                </div>
+            </div> 
+        </form>
+    </div>
+    <br />
+{% endblock %}
