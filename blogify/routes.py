@@ -82,7 +82,7 @@ def add_post():
         db.session.add(post)
         db.session.commit()
         flash("Blog Post added successfully!")
-        return redirect(url_for('add_post'))
+        return redirect(url_for('posts'))
     return render_template('add_post.html',form=form)
 
 @app.route('/posts')
@@ -113,6 +113,21 @@ def edit_post(id):
     form.slug.data = post.slug
     form.content.data = post.content
     return render_template('edit_post.html',form=form)
+
+@app.route('/posts/delete/<int:id>')
+def delete_post(id):
+    post = Post.query.get_or_404(id)
+    try:
+        db.session.delete(post)
+        db.session.commit()
+        flash("Blog post deleted successfully!")
+        posts = Post.query.order_by(Post.date_added)
+        return render_template("posts.html",posts=posts)
+    except:
+        flash("Error! Blog post could not be deleted!")
+        posts = Post.query.order_by(Post.date_added)
+        return render_template("posts.html",posts=posts)
+    
 
 # Page Not Found
 @app.errorhandler(404)
