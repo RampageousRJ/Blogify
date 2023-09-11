@@ -1,9 +1,15 @@
-from blogify import app,db
+from blogify import db,login_manager
 from datetime import datetime
 from werkzeug.security import generate_password_hash,check_password_hash
+from flask_login import UserMixin
 
-class Users(db.Model):
+@login_manager.user_loader
+def load_user(id):
+    return Users.query.get(int(id))
+ 
+class Users(db.Model,UserMixin):
     id = db.Column(db.Integer,primary_key=True)
+    username = db.Column(db.String(20),nullable=False,unique=True)
     name = db.Column(db.String(30),nullable=False)
     email = db.Column(db.String(120),nullable=False,unique=True)
     color = db.Column(db.String(120))

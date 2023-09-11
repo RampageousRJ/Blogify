@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Login
+{% endblock %}
+
+{% block body %}
+    <br />
+    <div class="shadow p-3 mb-5 bg-dark rounded">
+        <h3 class="text-center">Login to Continue</h3>
+        <form method="POST" class='form-register'>
+            <div class="form-labels">
+                {{form.hidden_tag()}}
+                {{form.username.label()}}
+                {{form.username(class='form-control', placeholder='User Name')}}
+                <br>
+                {{form.password.label()}}
+                {{form.password(class='form-control', placeholder='Password')}}
+                <br>
+                <div class="form-group text-center">
+                    {{ form.submit(class = 'btn btn-success') }}
+                </div>
+            </div> 
+        </form>
+    </div>
+    <br />
+    <br />
+    <br />
+{% endblock %}

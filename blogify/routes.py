@@ -3,6 +3,7 @@ from blogify import app,db
 from blogify.forms import *
 from blogify.models import *
 from werkzeug.security import generate_password_hash,check_password_hash
+from flask_login import login_user,LoginManager,login_required,logout_user,current_user
 
 @app.route('/')
 @app.route('/home')
@@ -13,7 +14,7 @@ def home():
 def user(name):
     favourite_food=['pizza','burger']
     return render_template('user.html',name=name,foods=favourite_food)
-
+ 
 @app.route('/name',methods=['GET','POST'])
 def name():
     name=None
@@ -32,10 +33,11 @@ def add_user():
         user = Users.query.filter_by(email=form.email.data).first()
         if user is None:
             hpw = generate_password_hash(form.password_hash.data,"sha256")
-            u1 = Users(name=form.name.data,email=form.email.data,color=form.color.data,password_hash=hpw)
+            u1 = Users(name=form.name.data,email=form.email.data,color=form.color.data,password_hash=hpw,username=form.username.data)
             db.session.add(u1)
             db.session.commit()
         form.name.data = ""
+        form.username.data = ""
         form.email.data = ""
         form.color.data = ""
         form.password_hash=""
@@ -128,13 +130,40 @@ def delete_post(id):
         posts = Post.query.order_by(Post.date_added)
         return render_template("posts.html",posts=posts)
     
+@app.route('/login',methods=['GET','POST'])
+def login():
+    form=LoginForm()
+    if form.validate_on_submit():
+        user = Users.query.filter_by(username=form.username.data).first()
+        if user:
+            if check_password_hash(user.password_hash,form.password.data):
+                login_user(user)
+                flash("Logged in successfully!")
+                return redirect(url_for('dashboard'))
+            else:
+                flash("Wrong Password! Please try a different password!")
+        else:
+            flash("Username does not exist!")               
+    return render_template('login.html',form=form)
 
+@app.route('/dashboard',methods=['GET','POST'])
+@login_required
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/logout',methods=['GET','POST'])
+@login_required
+def logout():
+    logout_user()
+    flash("Ypu have successfully logged out!")
+    return redirect('home')
+    
 # Page Not Found
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
-#Internal Server Error
+# Internal Server Error
 @app.errorhandler(500)
 def page_not_found(e):
     return render_template('500.html'), 500
