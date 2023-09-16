@@ -24,5 +24,40 @@
             <a href="{{url_for('logout')}}" class="btn btn-danger">Logout</a>
         </div>
     </div>
+    <br>
+    <div class="card bg-dark">
+        <div class="card-header">
+            <h4>Update User</h4>
+        </div>
+        <form action='dashboard' method="POST" class='form-register'>
+        <div class="card-body">
+                <div class="form-labels">
+                    {{form.hidden_tag()}}
+                    {{form.name.label()}}
+                    {{form.name(class='form-control', value=current_user.name)}}
+                    <br> 
+                    {{form.username.label()}}
+                    {{form.username(class='form-control', value=current_user.username)}}
+                    <br> 
+                    {{form.email.label()}}
+                    {{form.email(class='form-control', value=current_user.email)}}
+                    <br>
+                    {{form.color.label()}}
+                    {{form.color(class='form-control', value=current_user.color)}}
+                </div> 
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-2 text-center">
+                        {{ form.submit(class = 'btn btn-success') }}
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <a href="{{url_for('delete',id=current_user.id)}}" class='btn btn-danger'>Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
     <br />
 {% endblock %}

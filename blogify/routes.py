@@ -77,6 +77,7 @@ def delete(id):
     return redirect(url_for('add_user'))
 
 @app.route('/add-post',methods=['GET','POST'])
+@login_required
 def add_post():
     form  = PostForm()
     if form.validate_on_submit():
@@ -98,6 +99,7 @@ def post(id):
     return render_template('post.html',post=post)
 
 @app.route('/posts/edit/<int:id>',methods=['GET','POST'])
+@login_required
 def edit_post(id):
     post = Post.query.get_or_404(id)
     form = PostForm()
@@ -117,6 +119,7 @@ def edit_post(id):
     return render_template('edit_post.html',form=form)
 
 @app.route('/posts/delete/<int:id>')
+@login_required
 def delete_post(id):
     post = Post.query.get_or_404(id)
     try:
@@ -149,7 +152,22 @@ def login():
 @app.route('/dashboard',methods=['GET','POST'])
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    form = UserForm()
+    id=current_user.id
+    updated_name = Users.query.get_or_404(id)
+    if request.method=='POST':
+        updated_name.name = request.form['name']
+        updated_name.username = request.form['username']
+        updated_name.email = request.form['email']
+        updated_name.color = request.form['color']
+        try:
+            db.session.commit()
+            flash("User Updated Successfully")
+            return redirect(url_for('dashboard'))
+        except:
+            flash('ERROR! Something went wrong...')
+            return redirect(url_for('dashboard'))
+    return render_template('dashboard.html',form=form)
 
 @app.route('/logout',methods=['GET','POST'])
 @login_required

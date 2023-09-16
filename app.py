@@ -7,4 +7,5 @@ if __name__=='__main__':
     app.run(debug=True)
     
 ''' cd 'E:\Study\OneDrive - Manipal Academy of Higher Education\Coding\Mini-Projects\Blogify'
-    source virt/Scripts/activate                                                                '''
+    source virt/Scripts/activate                       
+    export FLASK_DEBUG=1    '''
