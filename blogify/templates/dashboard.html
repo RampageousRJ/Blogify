@@ -11,7 +11,16 @@
     </div>
     <div class="card bg-dark">
         <div class="card-header">
-            {{ current_user.username }}
+            <div clas="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>{{ current_user.username }}</h4>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a href="{{url_for('delete',id=current_user.id)}}" class='btn btn-danger'><img src="{{url_for('static',filename="images/trash.png")}}" alt="Delete Logo"></a>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="card-body">
           <strong>ID: </strong>{{current_user.id}}<br>
@@ -25,12 +34,14 @@
         </div>
     </div>
     <br>
+    <br>
+    <br>
     <div class="card bg-dark">
         <div class="card-header">
             <h4>Update User</h4>
         </div>
         <form action='dashboard' method="POST" class='form-register'>
-        <div class="card-body">
+            <div class="card-body">
                 <div class="form-labels">
                     {{form.hidden_tag()}}
                     {{form.name.label()}}

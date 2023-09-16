@@ -33,13 +33,12 @@ def add_user():
         user = Users.query.filter_by(email=form.email.data).first()
         if user is None:
             hpw = generate_password_hash(form.password_hash.data,"sha256")
-            u1 = Users(name=form.name.data,email=form.email.data,color=form.color.data,password_hash=hpw,username=form.username.data)
+            u1 = Users(name=form.name.data,email=form.email.data,password_hash=hpw,username=form.username.data)
             db.session.add(u1)
             db.session.commit()
         form.name.data = ""
         form.username.data = ""
         form.email.data = ""
-        form.color.data = ""
         form.password_hash=""
         flash("Registered Successfully!",category='success')
         return redirect(url_for('add_user'))
@@ -47,6 +46,7 @@ def add_user():
     return render_template('add_user.html',form=form,curr_users=curr_users)
 
 @app.route('/user/update/<int:id>',methods=['GET','POST'])
+@login_required
 def update(id):
     form = UserForm()
     updated_name = Users.query.get_or_404(id)
@@ -57,11 +57,14 @@ def update(id):
         try:
             db.session.commit()
             flash("User Updated Successfully")
-            return redirect(url_for('add_user'))
+            return redirect(url_for('dashboard'))
         except:
             flash('ERROR! Something went wrong...')
-            return redirect(url_for('add_user'))
-    return render_template("update.html",form=form,updated_name=updated_name)
+            return redirect(url_for('dashboard'))
+    if current_user.id != id:
+        flash("You are not authorized to access this page! Redirecting to dashboard...")
+        return redirect(url_for('dashboard'))
+    return render_template("update.html",form=form,updated_name=updated_name,id=id)
 
 @app.route('/delete/<int:id>')
 def delete(id):
