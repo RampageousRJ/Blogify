@@ -6,32 +6,40 @@
 
 {% block body %}
     <br />
-    <div class="shadow p-3 mb-5 bg-dark rounded">
-        <h3 class="text-center">Update User</h3>
-        <form action="{{updated_name.id}}" method="POST" class='form-register'>
-            <div class="form-labels">
-                {{form.hidden_tag()}}
-                {{form.name.label()}}
-                {{form.name(class='form-control', value=updated_name.name)}}
-                <br> 
-                {{form.email.label()}}
-                {{form.email(class='form-control', value=updated_name.email)}}
-                <br>
-                {{form.color.label()}}
-                {{form.color(class='form-control', value=updated_name.color)}}
-                <br>
-                <div class="row">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-2 text-center">
-                        {{ form.submit(class = 'btn btn-success') }}
-                    </div>
-                    <div class="col-md-2 text-center">
-                        <a href="{{url_for('delete',id=updated_name.id)}}" class='btn btn-danger'>Delete</a>
-                    </div>
-                </div>
-            </div> 
-        </form>
-    </div>    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="shadow p-3 mb-5 bg-dark rounded">
+                    <br>
+                    <h3 class="text-center">Update User</h3>
+                    <form action="{{updated_name.id}}" method="POST" class="form-register" style="padding: 2%;">
+                        <div class="form-labels">
+                            {{form.hidden_tag()}}
+                            {{form.name.label()}}
+                            {{form.name(class='form-control', value=updated_name.name)}}
+                            <br> 
+                            {{form.email.label()}}
+                            {{form.email(class='form-control', value=updated_name.email)}}
+                            <br>
+                            {{form.color.label()}}
+                            {{form.color(class='form-control', value=updated_name.color)}}
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-2 text-center">
+                                    {{ form.submit(class = 'btn btn-success') }}
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <a href="{{url_for('delete',id=updated_name.id)}}" class='btn btn-danger'>Delete</a>
+                                </div>
+                            </div>
+                        </div> 
+                    </form>
+                </div> 
+            </div>
+        </div>
+    </div>   
     <br />
     <br />
     <br />

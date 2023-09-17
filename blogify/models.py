@@ -16,6 +16,7 @@ class Users(db.Model,UserMixin):
     date_added = db.Column(db.DateTime,default=datetime.utcnow)
     password_hash = db.Column(db.String(128),nullable=False)
     password_hash2 = db.Column(db.String(128))
+    posts = db.relationship('Post',backref='blogger')
     
     @property
     def password(self):
@@ -35,6 +36,6 @@ class Post(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     title = db.Column(db.String(255))
     content = db.Column(db.Text)
-    author = db.Column(db.String(255))
     date_added = db.Column(db.DateTime, default=datetime.utcnow())
     slug = db.Column(db.String(255))
+    blogger_id = db.Column(db.Integer,db.ForeignKey('users.id'))

@@ -25,8 +25,8 @@ def name():
         flash("Submitted Successfully!",category='success')
     return render_template('name.html',name=name,form=form)
 
-@app.route('/user/add',methods=['GET','POST'])
-def add_user():
+@app.route('/user/register',methods=['GET','POST'])
+def register():
     form=UserForm()
     name=None
     if form.validate_on_submit():
@@ -41,9 +41,9 @@ def add_user():
         form.email.data = ""
         form.password_hash=""
         flash("Registered Successfully!",category='success')
-        return redirect(url_for('add_user'))
+        return redirect(url_for('login'))
     curr_users =Users.query.order_by(Users.date_added)
-    return render_template('add_user.html',form=form,curr_users=curr_users)
+    return render_template('register.html',form=form,curr_users=curr_users)
 
 @app.route('/user/update/<int:id>',methods=['GET','POST'])
 @login_required
@@ -77,14 +77,15 @@ def delete(id):
         flash("User Deleted Successfully!")
     except:
         flash("Error! Please try again!")
-    return redirect(url_for('add_user'))
+    return redirect(url_for('register'))
 
 @app.route('/add-post',methods=['GET','POST'])
 @login_required
 def add_post():
+    id = current_user.id
     form  = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data,content=form.content.data,author=form.author.data,slug=form.slug.data)
+        post = Post(title=form.title.data,content=form.content.data,blogger_id=id,slug=form.slug.data)
         db.session.add(post)
         db.session.commit()
         flash("Blog Post added successfully!")
@@ -99,7 +100,11 @@ def posts():
 @app.route('/posts/<int:id>')
 def post(id):
     post = Post.query.get_or_404(id)
-    return render_template('post.html',post=post)
+    if current_user.is_authenticated:
+        id = current_user.id
+    else:
+        id = -999       
+    return render_template('post.html',post=post,id=id)
 
 @app.route('/posts/edit/<int:id>',methods=['GET','POST'])
 @login_required
@@ -108,7 +113,6 @@ def edit_post(id):
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
-        post.author = form.author.data
         post.slug = form.slug.data
         post.content = form.content.data
         db.session.add(post)
@@ -116,7 +120,6 @@ def edit_post(id):
         flash("Post updated successfully!")
         return redirect(url_for('post',id=post.id))
     form.title.data = post.title
-    form.author.data = post.author
     form.slug.data = post.slug
     form.content.data = post.content
     return render_template('edit_post.html',form=form)
@@ -125,6 +128,10 @@ def edit_post(id):
 @login_required
 def delete_post(id):
     post = Post.query.get_or_404(id)
+    id = current_user.id
+    if post.blogger.id != id:
+        flash("You are not authorized to delete this post! Redirecting to dashboard...")
+        return redirect(url_for('dashboard'))
     try:
         db.session.delete(post)
         db.session.commit()
