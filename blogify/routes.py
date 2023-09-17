@@ -5,6 +5,11 @@ from blogify.models import *
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user,LoginManager,login_required,logout_user,current_user
 
+@app.context_processor
+def base():
+    form = SearchForm()
+    return dict(form=form)
+
 @app.route('/')
 @app.route('/home')
 def home():
@@ -77,7 +82,7 @@ def delete(id):
         flash("User Deleted Successfully!")
     except:
         flash("Error! Please try again!")
-    return redirect(url_for('register'))
+    return redirect(url_for('login'))
 
 @app.route('/add-post',methods=['GET','POST'])
 @login_required
@@ -111,6 +116,10 @@ def post(id):
 def edit_post(id):
     post = Post.query.get_or_404(id)
     form = PostForm()
+    id = current_user.id
+    if post.blogger.id != id:
+        flash("You are not authorized to edit this post! Redirecting to dashboard...")
+        return redirect(url_for('dashboard'))
     if form.validate_on_submit():
         post.title = form.title.data
         post.slug = form.slug.data
@@ -179,12 +188,26 @@ def dashboard():
             return redirect(url_for('dashboard'))
     return render_template('dashboard.html',form=form)
 
+
 @app.route('/logout',methods=['GET','POST'])
 @login_required
 def logout():
     logout_user()
     flash("Ypu have successfully logged out!")
     return redirect('home')
+    
+@app.route('/search',methods=['POST'])
+def search():
+    posts = Post.query
+    form = SearchForm()
+    if form.validate_on_submit():
+        searched_value = form.searched.data
+        posts = posts.filter(Post.content.like("%"+searched_value+"%"))
+        posts = posts.order_by(Post.title).all()
+        return render_template('search.html',form=form, searched=searched_value,posts=posts)
+    return render_template('search.html',form=form, search="NONE")
+    
+
     
 # Page Not Found
 @app.errorhandler(404)
