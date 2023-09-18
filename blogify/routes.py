@@ -15,25 +15,9 @@ def base():
 def home():
     return render_template('home.html')
 
-@app.route('/user/<name>')
-def user(name):
-    favourite_food=['pizza','burger']
-    return render_template('user.html',name=name,foods=favourite_food)
- 
-@app.route('/name',methods=['GET','POST'])
-def name():
-    name=None
-    form=NamerForm()
-    if form.validate_on_submit():
-        name=form.name.data
-        form.name.data=""
-        flash("Submitted Successfully!",category='success')
-    return render_template('name.html',name=name,form=form)
-
 @app.route('/user/register',methods=['GET','POST'])
 def register():
     form=UserForm()
-    name=None
     if form.validate_on_submit():
         user = Users.query.filter_by(email=form.email.data).first()
         if user is None:
@@ -206,8 +190,6 @@ def search():
         posts = posts.order_by(Post.title).all()
         return render_template('search.html',form=form, searched=searched_value,posts=posts)
     return render_template('search.html',form=form, search="NONE")
-    
-
     
 # Page Not Found
 @app.errorhandler(404)

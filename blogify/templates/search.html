@@ -5,22 +5,38 @@
 {% endblock %}
 
 {% block body %}
-  <h1>YOU SEARCHED FOR :: <span>{{ searched }}</span></h1>
-  {% for post in posts %}
-    <br>
-    <div class="card bg-dark">
-      <div class="card-header">
-        <a href="{{ url_for('post', id = post.id) }}" style="text-decoration:none;">{{ post.title }}</a>
+<center>
+  <br>
+  <h5>YOU SEARCHED FOR -- <span>{{ searched }}</span></h5>
+</center>
+  {% if posts %}
+    {% for post in posts %}
+      <br />
+      <div class="card bg-dark">
+        <div class="card-header">
+          <a href="{{ url_for('post', id = post.id) }}" style="text-decoration:none;">{{ post.title }}</a>
+        </div>
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <p>{{ post.content|safe }}</p>
+            <footer class="blockquote-footer">
+              <cite title="Author name">{{ post.blogger.username }}</cite> added on {{ post.date_added }}
+            </footer>
+          </blockquote>
+        </div>
       </div>
-      <div class="card-body">
-        <blockquote class="blockquote mb-0">
-          <p>{{ post.content }}</p>
-          <footer class="blockquote-footer">
-            <cite title="Author name">{{ post.blogger.username }}</cite> added on {{ post.date_added }}
-          </footer>
-        </blockquote>
-      </div>
+      <br />
+    {% endfor %}
+  {% else %}
+  <center>
+    <p>Sorry there were no results for {{searched}}</p>
+  </center>
+  {% endif %}
+  <br>
+  <br>
+  <div class="row">
+    <div class="col-md-2 text-center">
+      <a href="{{url_for('posts')}}" class="btn btn-outline-secondary" >All Posts</a>
     </div>
-    <br>
-  {% endfor %}
+  </div>
 {% endblock %}

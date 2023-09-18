@@ -14,10 +14,6 @@ class UserForm(UserMixin,FlaskForm):
     password_hash2=PasswordField("Re-type password: ",validators=[DataRequired()])
     submit=SubmitField("Submit")
     
-class NamerForm(UserMixin,FlaskForm):
-    name=StringField("Enter name: ",validators=[DataRequired()])
-    submit=SubmitField("Submit")
-    
 class PostForm(FlaskForm):
     title = StringField("Title",validators=[DataRequired()])
     content = CKEditorField("Content",validators=[DataRequired()])
