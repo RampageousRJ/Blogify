@@ -3,6 +3,7 @@ from wtforms import StringField,SubmitField,PasswordField,ValidationError
 from wtforms.validators import DataRequired, EqualTo,Length
 from wtforms.widgets import TextArea
 from flask_login import UserMixin
+from flask_ckeditor import CKEditorField
 
 class UserForm(UserMixin,FlaskForm):
     name=StringField("Enter name: ",validators=[DataRequired()])
@@ -19,7 +20,7 @@ class NamerForm(UserMixin,FlaskForm):
     
 class PostForm(FlaskForm):
     title = StringField("Title",validators=[DataRequired()])
-    content = StringField("Content",validators=[DataRequired()],widget=TextArea())
+    content = CKEditorField("Content",validators=[DataRequired()])
     slug = StringField("Slug",validators=[DataRequired()])
     submit = SubmitField("Confirm")
     
