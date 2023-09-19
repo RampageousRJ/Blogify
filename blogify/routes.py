@@ -15,7 +15,7 @@ def base():
 def home():
     return render_template('home.html')
 
-@app.route('/user/register',methods=['GET','POST'])
+@app.route('/register',methods=['GET','POST'])
 def register():
     form=UserForm()
     if form.validate_on_submit():
@@ -31,6 +31,9 @@ def register():
         form.password_hash=""
         flash("Registered Successfully!",category='success')
         return redirect(url_for('login'))
+    if current_user.is_authenticated:
+        flash('ERROR: cannot access when logged in!')
+        return redirect(url_for('dashboard')) 
     curr_users =Users.query.order_by(Users.date_added)
     return render_template('register.html',form=form,curr_users=curr_users)
 
@@ -140,6 +143,7 @@ def delete_post(id):
 @app.route('/login',methods=['GET','POST'])
 def login():
     form=LoginForm()
+    
     if form.validate_on_submit():
         user = Users.query.filter_by(username=form.username.data).first()
         if user:
@@ -150,7 +154,10 @@ def login():
             else:
                 flash("Wrong Password! Please try a different password!")
         else:
-            flash("Username does not exist!")               
+            flash("Username does not exist!")  
+    if current_user.is_authenticated:
+        flash('ERROR: You are already logged in!')
+        return redirect(url_for('dashboard'))             
     return render_template('login.html',form=form)
 
 @app.route('/dashboard',methods=['GET','POST'])
@@ -179,7 +186,7 @@ def dashboard():
 @login_required
 def logout():
     logout_user()
-    flash("Ypu have successfully logged out!")
+    flash("You have successfully logged out!")
     return redirect('home')
     
 @app.route('/search',methods=['POST'])

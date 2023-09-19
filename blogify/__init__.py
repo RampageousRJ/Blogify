@@ -14,6 +14,9 @@ app = Flask(__name__)
 # NEW MySQL DB
 app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:rampage@localhost/users'
 app.config['SECRET_KEY']=os.getenv("SECRET_KEY")
+app.config['SECRET_KEY']=os.getenv("SECRET_KEY")
+app.config['RECAPTCHA_PUBLIC_KEY'] = os.getenv('BLOGIFY_PUBLIC_KEY')
+app.config['RECAPTCHA_PRIVATE_KEY'] = os.getenv('BLOGIFY_PRIVATE_KEY')
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.init_app(app)

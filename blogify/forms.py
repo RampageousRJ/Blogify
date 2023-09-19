@@ -1,4 +1,4 @@
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm,RecaptchaField
 from wtforms import StringField,SubmitField,PasswordField,TextAreaField
 from wtforms.validators import DataRequired, EqualTo,Length
 from wtforms.widgets import TextArea
@@ -13,6 +13,7 @@ class UserForm(UserMixin,FlaskForm):
     color=StringField("Enter favourite color: ")
     password_hash=PasswordField("Enter password: ",validators=[DataRequired(),EqualTo('password_hash2',message='Passwords must match'),Length(8)])
     password_hash2=PasswordField("Re-type password: ",validators=[DataRequired()])
+    recaptcha = RecaptchaField()
     submit=SubmitField("Submit")
     
 class PostForm(FlaskForm):
@@ -24,6 +25,7 @@ class PostForm(FlaskForm):
 class LoginForm(FlaskForm):
     username = StringField("Username",validators=[DataRequired()])
     password = PasswordField("Password",validators=[DataRequired()])
+    recaptcha = RecaptchaField()
     submit = SubmitField('Submit')
     
 class SearchForm(FlaskForm):
