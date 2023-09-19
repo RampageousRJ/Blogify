@@ -11,6 +11,7 @@ class Users(db.Model,UserMixin):
     id = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(20),nullable=False,unique=True)
     name = db.Column(db.String(30),nullable=False)
+    about = db.Column(db.Text(500))
     email = db.Column(db.String(120),nullable=False,unique=True)
     color = db.Column(db.String(120))
     date_added = db.Column(db.DateTime,default=datetime.utcnow)

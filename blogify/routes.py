@@ -43,6 +43,7 @@ def update(id):
         updated_name.name = request.form['name']
         updated_name.email = request.form['email']
         updated_name.color = request.form['color']
+        updated_name.about = request.form['about']
         try:
             db.session.commit()
             flash("User Updated Successfully")
@@ -83,7 +84,7 @@ def add_post():
 
 @app.route('/posts')
 def posts():
-    posts = Post.query.order_by(Post.date_added)
+    posts = Post.query.order_by(Post.date_added.desc())
     return render_template("posts.html",posts=posts)
 
 @app.route('/posts/<int:id>')
@@ -115,7 +116,7 @@ def edit_post(id):
     form.title.data = post.title
     form.slug.data = post.slug
     form.content.data = post.content
-    return render_template('edit_post.html',form=form)
+    return render_template('edit_post.html',form=form,post=post)
 
 @app.route('/posts/delete/<int:id>')
 @login_required
@@ -163,6 +164,7 @@ def dashboard():
         updated_name.username = request.form['username']
         updated_name.email = request.form['email']
         updated_name.color = request.form['color']
+        updated_name.about = request.form['about']
         try:
             db.session.commit()
             flash("User Updated Successfully")

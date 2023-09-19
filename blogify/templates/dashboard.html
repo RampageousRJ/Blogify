@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Login
+{{ current_user.username }} Dashboard
 {% endblock %}
 
 {% block body %}
@@ -22,16 +22,31 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
-          <strong>ID: </strong>{{current_user.id}}<br>
-          <strong>Name: </strong>{{current_user.name}}<br>
-          <strong>Email: </strong>{{current_user.email}}<br>
-          <strong>Favourite Colour: </strong>{{current_user.color}}<br>
-          <strong>Date-Added: </strong>{{current_user.date_added}}
+        <div class="container">
+            <div class="row d-flex flex-wrap align-items-center">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        {% if current_user.about %}
+                            <em>&ldquo;{{current_user.about}}&rdquo;</em>
+                            <br>
+                            <br>
+                        {% endif %}
+                        <strong>ID: </strong>{{current_user.id}}<br>
+                        <strong>Name: </strong>{{current_user.name}}<br>
+                        <strong>Email: </strong>{{current_user.email}}<br>
+                        <strong>Favourite Colour: </strong>{{current_user.color}}<br>
+                        <strong>Date-Added: </strong>{{current_user.date_added}}
+                      </div>
+                </div>
+                <div class="col-md-4 text-right">
+                    <img src="{{url_for('static',filename='images/profile.jpg')}}" alt="" style="border-radius: 50%; max-width: 35%; min-width: 10%;">
+                </div>
+            </div>
         </div>
         <div class="card-footer">
             <a href="{{url_for('logout')}}" class="btn btn-danger">Logout</a>
         </div>
+        
     </div>
     <br>
     <br>
@@ -55,6 +70,9 @@
                     <br>
                     {{form.color.label()}}
                     {{form.color(class='form-control', value=current_user.color)}}
+                    <br>
+                    {{form.about.label()}}
+                    {{form.about(class='form-control', value=current_user.about, rows=5)}}
                 </div> 
             </div>
             <div class="card-footer">

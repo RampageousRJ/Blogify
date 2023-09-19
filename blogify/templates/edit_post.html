@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Add Blog
+  Edit #{{post.id}}
 {% endblock %}
 
 {% block body %}
     <br />
     <div class="shadow p-3 mb-5 bg-dark rounded">
-        <h3 class="text-center">Add Blog Post</h3>
+        <h3 class="text-center">Edit Blog Post</h3>
         <form method="POST" class='form-register'>
             <div class="form-labels">
                 {{form.hidden_tag()}}
