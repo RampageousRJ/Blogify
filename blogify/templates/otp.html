@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Validate OTP
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="shadow p-3 mb-5 bg-dark rounded">
+                <strong>
+                    <h5 class="text-center"> We have sent an OTP to the {{user.email}}</h5>
+                    <h5 class="text-center">Please check your inbox and verify OTP</h5>
+                </strong>
+                <br>
+                <form method="POST" class='form-register'>
+                    <div class="form-labels">
+                        {{form.hidden_tag()}}
+                        {{form.otp.label()}}
+                        {{form.otp(class='form-control', placeholder='6-Digit OTP')}}
+                        <br>
+                        <div class="form-group text-center">
+                            {{ form.submit(class = 'btn btn-success') }}
+                        </div>        
+                    </div> 
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
