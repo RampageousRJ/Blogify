@@ -1,9 +1,10 @@
 from flask import Flask,render_template,flash,request,redirect,url_for
-from blogify import app,db,load_dotenv
+from blogify import app,db,load_dotenv,mail
 from blogify.forms import *
 from blogify.models import *
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user,LoginManager,login_required,logout_user,current_user
+from flask_mail import Message
 from random import randint
 import os
 load_dotenv()
@@ -22,9 +23,9 @@ def home():
 def register():
     form=UserForm()
     if form.validate_on_submit():
-        if '.com' not in form.email.data:
-            flash("Invalid Email Address!")
-            return render_template('register.html',form=form)
+        # if '.com' not in form.email.data:
+        #     flash("Invalid Email Address!")
+        #     return render_template('register.html',form=form)
         user_exists = Users.query.filter_by(email=form.email.data).first()
         name_repeat = Users.query.filter_by(username=form.username.data).first()
         if name_repeat:
@@ -38,13 +39,15 @@ def register():
         os.environ['NEW_EMAIL']=form.email.data
         os.environ['NEW_PASS']=hpw
         os.environ['NEW_USERNAME']=form.username.data
+        
+        os.environ['OTP']=str(randint(100000,999999))
+        msg = Message("OTP Verficiation",body=f"Use this OTP to verify your email address for Blogify! \n\n{os.getenv('OTP')}",sender=('Blogify','automailer.0123@gmail.com'),recipients=[form.email.data.strip()])
+        mail.send(msg)
+        flash("OTP sent!")
         form.name.data = ""
         form.username.data = ""
         form.email.data = ""
         form.password_hash=""
-        os.environ['OTP']=str(randint(100000,999999))
-        print(os.getenv('OTP'))
-        flash("OTP sent!")
         return redirect(url_for('otp',user=os.getenv('NEW_USERNAME')))
     if current_user.is_authenticated:
         flash('ERROR: cannot access when logged in!')
