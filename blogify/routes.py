@@ -1,13 +1,19 @@
-from flask import Flask,render_template,flash,request,redirect,url_for
+from flask import render_template,flash,request,redirect,url_for
 from blogify import app,db,load_dotenv,mail
 from blogify.forms import *
 from blogify.models import *
 from werkzeug.security import generate_password_hash,check_password_hash
-from flask_login import login_user,LoginManager,login_required,logout_user,current_user
+from flask_login import login_user,login_required,logout_user,current_user
 from flask_mail import Message
 from random import randint
+import re
 import os
 load_dotenv()
+
+def validEmail(email_text):
+    if re.match('([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+',email_text) is not None:
+        return True
+    return False
 
 @app.context_processor
 def base():
@@ -23,9 +29,9 @@ def home():
 def register():
     form=UserForm()
     if form.validate_on_submit():
-        # if '.com' not in form.email.data:
-        #     flash("Invalid Email Address!")
-        #     return render_template('register.html',form=form)
+        if not validEmail(form.email.data):
+            flash("Invalid Email Address!")
+            return render_template('register.html',form=form)
         user_exists = Users.query.filter_by(email=form.email.data).first()
         name_repeat = Users.query.filter_by(username=form.username.data).first()
         if name_repeat:
@@ -42,7 +48,7 @@ def register():
         
         os.environ['OTP']=str(randint(100000,999999))
         msg = Message("OTP Verficiation",body=f"Use this OTP to verify your email address for Blogify! \n\n{os.getenv('OTP')}",sender=('Blogify','automailer.0123@gmail.com'),recipients=[form.email.data.strip()])
-        mail.send(msg)
+        # mail.send(msg)
         flash("OTP sent!")
         form.name.data = ""
         form.username.data = ""
@@ -224,7 +230,7 @@ def search():
     form = SearchForm()
     if form.validate_on_submit():
         searched_value = form.searched.data
-        posts = posts.filter(Post.content.like("%"+searched_value+"%"))
+        posts = posts.filter(Post.title.like("%"+searched_value+"%"))
         posts = posts.order_by(Post.title).all()
         return render_template('search.html',form=form, searched=searched_value,posts=posts)
     return render_template('search.html',form=form, search="NONE")
