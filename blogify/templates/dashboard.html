@@ -44,49 +44,38 @@
             </div>
         </div>
         <div class="card-footer">
-            <a href="{{url_for('logout')}}" class="btn btn-danger">Logout</a>
+            <div class="row">
+                <div class="col text-left">
+                    <a href="{{url_for('update',id=current_user.id)}}" class="btn btn-secondary">Edit Profile</a>
+                </div>
+                <div class="col text-right">
+                    <a href="{{url_for('logout')}}" class="btn btn-danger">Logout</a>
+                </div>
+            </div>
+            
         </div>
         
     </div>
     <br>
     <br>
     <br>
+    {% if posts.count()!=0 %}
+    <h1 class"text-left">User Blogs</h1>
+    <br>
+    {% for post in posts %}
     <div class="card bg-dark">
         <div class="card-header">
-            <h4>Update User</h4>
+            <a href="{{url_for('post',id=post.id)}}" style="text-decoration:none;">{{ post.title }}</a>
         </div>
-        <form action='dashboard' method="POST" class='form-register'>
-            <div class="card-body">
-                <div class="form-labels">
-                    {{form.hidden_tag()}}
-                    {{form.name.label()}}
-                    {{form.name(class='form-control', value=current_user.name)}}
-                    <br> 
-                    {{form.username.label()}}
-                    {{form.username(class='form-control', value=current_user.username)}}
-                    <br> 
-                    {{form.email.label()}}
-                    {{form.email(class='form-control', value=current_user.email)}}
-                    <br>
-                    {{form.color.label()}}
-                    {{form.color(class='form-control', value=current_user.color)}}
-                    <br>
-                    {{form.about.label()}}
-                    {{form.about(class='form-control', value=current_user.about, rows=5)}}
-                </div> 
-            </div>
-            <div class="card-footer">
-                <div class="row">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-2 text-center">
-                        {{ form.submit(class = 'btn btn-success') }}
-                    </div>
-                    <div class="col-md-2 text-center">
-                        <a href="{{url_for('delete',id=current_user.id)}}" class='btn btn-danger'>Delete</a>
-                    </div>
-                </div>
-            </div>
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <p>{{ post.content|safe }}</p>
+            <footer class="blockquote-footer"> <cite title="Author name">{{ post.blogger.username }}</cite> added on {{ post.date_added }}</footer>
+          </blockquote>
         </div>
-    </form>
+    </div>
+    <br>
+    {% endfor %}
+    {% endif %}
     <br />
 {% endblock %}

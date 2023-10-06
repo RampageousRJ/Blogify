@@ -84,7 +84,8 @@ def update(id):
         updated_name.name = request.form['name']
         updated_name.email = request.form['email']
         updated_name.color = request.form['color']
-        updated_name.about = request.form['about']
+        if request.form['about']:
+            updated_name.about = request.form['about']
         try:
             db.session.commit()
             flash("User Updated Successfully")
@@ -199,22 +200,9 @@ def login():
 @login_required
 def dashboard():
     form = UserForm()
-    id=current_user.id
-    updated_name = Users.query.get_or_404(id)
-    if request.method=='POST':
-        updated_name.name = request.form['name']
-        updated_name.username = request.form['username']
-        updated_name.email = request.form['email']
-        updated_name.color = request.form['color']
-        updated_name.about = request.form['about']
-        try:
-            db.session.commit()
-            flash("User Updated Successfully")
-            return redirect(url_for('dashboard'))
-        except:
-            flash('ERROR! Something went wrong...')
-            return redirect(url_for('dashboard'))
-    return render_template('dashboard.html',form=form)
+    posts = Post.query.filter_by(blogger_id=current_user.id)
+    print(posts.count())
+    return render_template('dashboard.html',form=form,posts=posts)
 
 
 @app.route('/logout',methods=['GET','POST'])
