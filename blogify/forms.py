@@ -34,3 +34,9 @@ class SearchForm(FlaskForm):
 class OTPForm(FlaskForm):
     otp = IntegerField("Enter OTP: ",validators=[DataRequired()])
     submit = SubmitField("Validate")
+    
+class FeedbackForm(FlaskForm):
+    title = StringField("Enter title",validators=[DataRequired()])
+    body = TextAreaField("Enter body",validators=[DataRequired()])
+    recaptcha = RecaptchaField()
+    submit = SubmitField("Submit")

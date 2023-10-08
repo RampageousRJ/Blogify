@@ -48,7 +48,7 @@ def register():
         
         os.environ['OTP']=str(randint(100000,999999))
         msg = Message("OTP Verficiation",body=f"Use this OTP to verify your email address for Blogify! \n\n{os.getenv('OTP')}",sender=('Blogify','automailer.0123@gmail.com'),recipients=[form.email.data.strip()])
-        # mail.send(msg)
+        mail.send(msg)
         flash("OTP sent!")
         form.name.data = ""
         form.username.data = ""
@@ -222,6 +222,17 @@ def search():
         posts = posts.order_by(Post.title).all()
         return render_template('search.html',form=form, searched=searched_value,posts=posts)
     return render_template('search.html',form=form, search="NONE")
+
+@app.route('/feedback',methods=['GET','POST'])
+@login_required
+def feedback():
+    form = FeedbackForm()
+    if request.method=='POST':
+        msg = Message(form.title.data,body=form.body.data,sender=(current_user.username,current_user.email),recipients=['automailer.0123@gmail.com'])
+        mail.send(msg)
+        flash("Thanks for your feedback!")
+        return redirect(url_for('dashboard'))
+    return render_template('feedback.html',form=form)    
     
 # Page Not Found
 @app.errorhandler(404)

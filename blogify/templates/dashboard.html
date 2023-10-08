@@ -79,3 +79,13 @@
     {% endif %}
     <br />
 {% endblock %}
+
+{% block footer %}
+<footer class="text-center text-lg-start bg-dark" style="width: 100%;">
+  <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+    Blogify values your support:  
+    <a class="text" href="{{url_for('feedback')}}" style="text-decoration: none;">Feedback</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+{% endblock %}
