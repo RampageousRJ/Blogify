@@ -13,7 +13,7 @@ app = Flask(__name__)
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False 
 
 # NEW MySQL DB
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:rampage@localhost/users'
+app.config['SQLALCHEMY_DATABASE_URI']=os.getenv("DATABASE_URI")
 app.config['SECRET_KEY']=os.getenv("SECRET_KEY")
 app.config['SECRET_KEY']=os.getenv("SECRET_KEY")
 app.config['RECAPTCHA_PUBLIC_KEY'] = os.getenv('BLOGIFY_PUBLIC_KEY')
