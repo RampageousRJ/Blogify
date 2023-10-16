@@ -199,10 +199,9 @@ def login():
 @app.route('/dashboard',methods=['GET','POST'])
 @login_required
 def dashboard():
-    form = UserForm()
     posts = Post.query.filter_by(blogger_id=current_user.id)
     print(posts.count())
-    return render_template('dashboard.html',form=form,posts=posts)
+    return render_template('dashboard.html',posts=posts)
 
 
 @app.route('/logout',methods=['GET','POST'])
@@ -232,7 +231,18 @@ def feedback():
         mail.send(msg)
         flash("Thanks for your feedback!")
         return redirect(url_for('dashboard'))
-    return render_template('feedback.html',form=form)    
+    return render_template('feedback.html',form=form)  
+
+@app.route("/blogger/<string:username>",methods=['GET','POST'])
+def blogger(username):
+    if username==current_user.username:
+        return redirect(url_for('dashboard'))
+    blogger = Users.query.filter_by(username=username).first()
+    if not blogger:
+        return render_template('404.html'), 404
+    posts = Post.query.filter_by(blogger_id=blogger.id)
+    print(posts.count())
+    return render_template('blogger.html',posts=posts,blogger=blogger)
     
 # Page Not Found
 @app.errorhandler(404)

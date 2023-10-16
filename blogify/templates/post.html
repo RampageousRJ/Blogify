@@ -15,7 +15,11 @@
         <div class="card-body">
           <blockquote class="blockquote mb-0">
             <p>{{ post.content|safe }}</p>
-            <footer class="blockquote-footer"> <cite title="Author name">{{ post.blogger.username }}</cite> added on {{ post.date_added }}</footer>
+            <footer class="blockquote-footer">
+                <cite title="Author name"> 
+                  <a href="{{url_for('blogger',username=post.blogger.username)}}" style="text-decoration:none; color: grey;">{{ post.blogger.username }}</a>
+                </cite> added on {{ post.date_added }}
+              </footer>
           </blockquote>
         </div>
     </div>

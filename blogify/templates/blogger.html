@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-{{ current_user.username }} Dashboard
+{{ blogger.username }} Dashboard
 {% endblock %}
 
 {% block body %}
@@ -14,10 +14,7 @@
             <div clas="container">
                 <div class="row">
                     <div class="col-md-6">
-                        <h4>{{ current_user.username }}</h4>
-                    </div>
-                    <div class="col-md-6 text-right">
-                        <a href="{{url_for('delete',id=current_user.id)}}" class='btn btn-danger'><img src="{{url_for('static',filename="images/trash.png")}}" alt="Delete Logo"></a>
+                        <h4>{{ blogger.username }}</h4>
                     </div>
                 </div>
             </div>
@@ -26,16 +23,14 @@
             <div class="row d-flex flex-wrap align-items-center">
                 <div class="col-md-8">
                     <div class="card-body">
-                        {% if current_user.about %}
-                            <em>&ldquo;{{current_user.about}}&rdquo;</em>
+                        {% if blogger.about %}
+                            <em>&ldquo;{{blogger.about}}&rdquo;</em>
                             <br>
                             <br>
                         {% endif %}
-                        <strong>ID: </strong>{{current_user.id}}<br>
-                        <strong>Name: </strong>{{current_user.name}}<br>
-                        <strong>Email: </strong>{{current_user.email}}<br>
-                        <strong>Favourite Colour: </strong>{{current_user.color}}<br>
-                        <strong>Date-Added: </strong>{{current_user.date_added}}
+                        <strong>ID: </strong>{{blogger.id}}<br>
+                        <strong>Favourite Colour: </strong>{{blogger.color}}<br>
+                        <strong>Date-Added: </strong>{{blogger.date_added}}
                       </div>
                 </div>
                 <div class="col-md-4 text-right">
@@ -46,10 +41,7 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col text-left">
-                    <a href="{{url_for('update',id=current_user.id)}}" class="btn btn-secondary">Edit Profile</a>
-                </div>
-                <div class="col text-right">
-                    <a href="{{url_for('logout')}}" class="btn btn-danger">Logout</a>
+                    <a href="#" class="btn btn-danger">Subscribe</a>
                 </div>
             </div>
             
@@ -60,7 +52,9 @@
     <br>
     <br>
     {% if posts.count()!=0 %}
-    <h3 class"text-center">User Blogs</h3>
+    <center>
+        <h3 class"text-center">User Blogs</h3>
+    </center>
     <br>
     {% for post in posts %}
     <div class="card bg-dark">
@@ -78,14 +72,4 @@
     {% endfor %}
     {% endif %}
     <br />
-{% endblock %}
-
-{% block footer %}
-<footer class="text-center text-lg-start bg-dark" style="width: 100%;">
-  <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-    Blogify values your support:  
-    <a class="text" href="{{url_for('feedback')}}" style="text-decoration: none;">Feedback</a>
-  </div>
-  <!-- Copyright -->
-</footer>
 {% endblock %}
