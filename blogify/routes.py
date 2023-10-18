@@ -115,7 +115,7 @@ def add_post():
     id = current_user.id
     form  = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data,content=form.content.data,blogger_id=id,slug=form.slug.data)
+        post = Post(title=form.title.data,content=form.content.data,blogger_id=id)
         db.session.add(post)
         db.session.commit()
         flash("Blog Post added successfully!")
@@ -147,14 +147,12 @@ def edit_post(id):
         return redirect(url_for('dashboard'))
     if form.validate_on_submit():
         post.title = form.title.data
-        post.slug = form.slug.data
         post.content = form.content.data
         db.session.add(post)
         db.session.commit()
         flash("Post updated successfully!")
         return redirect(url_for('post',id=post.id))
     form.title.data = post.title
-    form.slug.data = post.slug
     form.content.data = post.content
     return render_template('edit_post.html',form=form,post=post)
 
@@ -170,12 +168,10 @@ def delete_post(id):
         db.session.delete(post)
         db.session.commit()
         flash("Blog post deleted successfully!")
-        posts = Post.query.order_by(Post.date_added)
-        return render_template("posts.html",posts=posts)
+        return redirect(url_for('posts'))
     except:
         flash("Error! Blog post could not be deleted!")
-        posts = Post.query.order_by(Post.date_added)
-        return render_template("posts.html",posts=posts)
+        return redirect(url_for('posts'))
     
 @app.route('/login',methods=['GET','POST'])
 def login():

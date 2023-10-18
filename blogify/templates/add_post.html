@@ -16,14 +16,15 @@
                         {{form.title.label()}}
                         {{form.title(class='form-control', placeholder='Title')}}
                         <br>
-                        {{form.slug.label()}}
-                        {{form.slug(class='form-control', placeholder='Slug')}}
-                        <br>
                         {{form.content.label()}}
                         {{form.content(class='form-control',rows=5, placeholder='Content')}}
                         <br>
+                        
+                        {% include 'includes/confirm_add_post.html' %}
                         <div class="form-group text-center">
-                            {{ form.submit(class = 'btn btn-success') }}
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addblog">
+                                Add Blog
+                            </button>
                         </div>
                     </div> 
                 </form>
