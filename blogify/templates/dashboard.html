@@ -16,8 +16,12 @@
                     <div class="col-md-6">
                         <h4>{{ current_user.username }}</h4>
                     </div>
+
+                    {% include 'includes/DeleteUserModal.html' %}     
                     <div class="col-md-6 text-right">
-                        <a href="{{url_for('delete',id=current_user.id)}}" class='btn btn-danger'><img src="{{url_for('static',filename="images/trash.png")}}" alt="Delete Logo"></a>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUser">
+                            <img src="{{url_for('static',filename="images/trash.png")}}" alt="Delete Logo">
+                        </button>
                     </div>
                 </div>
             </div>
