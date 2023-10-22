@@ -246,6 +246,24 @@ def blogger(username):
     posts = Post.query.filter_by(blogger_id=blogger.id)
     print(posts.count())
     return render_template('blogger.html',posts=posts,blogger=blogger)
+
+@app.route('/comment/delete/<int:id>')
+@login_required
+def delete_comment(id):
+    comment = Comment.query.get_or_404(id)
+    post_id = comment.post.id
+    id = current_user.id
+    if comment.blogger.id != id:
+        flash("You are not authorized to delete this comment! Redirecting to dashboard...")
+        return redirect(url_for('dashboard'))
+    try:
+        db.session.delete(comment)
+        db.session.commit()
+        flash("Comment deleted successfully!")
+        return redirect(url_for('post',id=post_id))
+    except:
+        flash("Error! Comment could not be deleted!")
+        return redirect(url_for('post',id=post_id))
     
 # Page Not Found
 @app.errorhandler(404)

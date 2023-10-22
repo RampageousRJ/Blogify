@@ -46,12 +46,26 @@
     <br>
 
     {% if comments.count()!=0 %}
+    <br>
     <h3 class"text-center">Comments</h3>
     <br>
         {% for comment in comments %}
           <div class="card bg-dark">
             <div class="card-body">
-              <p>{{ comment.content|safe }}</p>
+              <div class="row d-flex flex-wrap align-items-center">
+                <div class="col-md-8">
+                  <p>{{ comment.content|safe }}</p>
+                </div>
+                {% if current_user.id == comment.blogger.id %}
+                <div class="col-md-4 text-right">
+                    <div class="btn">
+                      <a href="{{url_for('delete_comment',id=comment.id)}}">
+                        <img src="{{url_for('static',filename='images/trash.png')}}" alt="" style="max-width: 100%;">
+                      </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
             </div>
             <div class="card-footer">
               <cite title="Author name"> 
