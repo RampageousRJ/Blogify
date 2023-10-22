@@ -19,6 +19,7 @@ class Users(db.Model,UserMixin):
     password_hash = db.Column(db.String(128),nullable=False)
     password_hash2 = db.Column(db.String(128))
     posts = db.relationship('Post',backref='blogger',cascade='all,delete')
+    comments = db.relationship('Comment',backref='blogger',cascade='all,delete')
     
     @property
     def password(self):
@@ -49,3 +50,4 @@ class Comment(db.Model):
     content = db.Column(db.Text)
     date_added = db.Column(db.DateTime, default=datetime.utcnow())
     post_id = db.Column(db.Integer,db.ForeignKey('post.id'))
+    blogger_id = db.Column(db.Integer,db.ForeignKey('users.id'))

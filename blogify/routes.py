@@ -136,7 +136,7 @@ def post(id):
         id = -999       
     form = CommentForm()
     if form.validate_on_submit():
-        comment = Comment(content=form.content.data,post_id=post.id)
+        comment = Comment(content=form.content.data,post_id=post.id,blogger_id=current_user.id)
         db.session.add(comment)
         db.session.commit()
         flash("Comment added successfully!")

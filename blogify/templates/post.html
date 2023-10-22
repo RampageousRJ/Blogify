@@ -23,6 +23,7 @@
                     {{ post.blogger.username }}
                   {% endif %}
                 </cite> added on {{ post.date_added }}
+                {% if current_user.is_authenticated %}
                 <hr>
                 <form action="{{url_for('post',id=post.id)}}"  method="POST" class='form-register'>
                     {{form.hidden_tag()}}
@@ -37,6 +38,7 @@
                       </div>
                     </div>
                 </form> 
+                {% endif %}
             </footer>
           </blockquote>
         </div>
@@ -46,16 +48,27 @@
     {% if comments.count()!=0 %}
     <h3 class"text-center">Comments</h3>
     <br>
-    {% for comment in comments %}
-    <div class="card bg-dark">
-        <div class="card-body">
-          <blockquote class="blockquote mb-0">
-            <p>{{ comment.content|safe }}</p>
-          </blockquote>
+        {% for comment in comments %}
+          <div class="card bg-dark">
+            <div class="card-body">
+              <p>{{ comment.content|safe }}</p>
+            </div>
+            <div class="card-footer">
+              <cite title="Author name"> 
+                {% if current_user.is_authenticated %}
+                  <a href="{{url_for('blogger',username=comment.blogger.username)}}" style="text-decoration:none; color: grey;">{{ comment.blogger.username }}</a>
+                {% else %}
+                  {{ comment.blogger.username }}
+                {% endif %}
+              </cite> added on {{ comment.date_added }}
+            </div>
         </div>
-    </div>
-    <br>
-    {% endfor %}
+
+        <br>
+      {% endfor %}
+      </div>
+  </div>
+      
     {% endif %}
 
     <div class="row">
