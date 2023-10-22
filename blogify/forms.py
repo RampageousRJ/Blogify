@@ -39,3 +39,7 @@ class FeedbackForm(FlaskForm):
     body = TextAreaField("Enter body",validators=[DataRequired()])
     recaptcha = RecaptchaField()
     submit = SubmitField("Submit")
+    
+class CommentForm(FlaskForm):
+    content = StringField("Add comment...",validators=[DataRequired()])
+    submit = SubmitField("Comment")

@@ -127,14 +127,22 @@ def posts():
     posts = Post.query.order_by(Post.date_added.desc())
     return render_template("posts.html",posts=posts)
 
-@app.route('/posts/<int:id>')
+@app.route('/posts/<int:id>',methods=['GET','POST'])
 def post(id):
     post = Post.query.get_or_404(id)
     if current_user.is_authenticated:
         id = current_user.id
     else:
         id = -999       
-    return render_template('post.html',post=post,id=id)
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment = Comment(content=form.content.data,post_id=post.id)
+        db.session.add(comment)
+        db.session.commit()
+        flash("Comment added successfully!")
+        return redirect(url_for('post',id=post.id)) 
+    comments = Comment.query.filter_by(post_id=post.id)
+    return render_template('post.html',post=post,id=id,form=form,comments=comments)
 
 @app.route('/posts/edit/<int:id>',methods=['GET','POST'])
 @login_required
@@ -196,7 +204,6 @@ def login():
 @login_required
 def dashboard():
     posts = Post.query.filter_by(blogger_id=current_user.id)
-    print(posts.count())
     return render_template('dashboard.html',posts=posts)
 
 

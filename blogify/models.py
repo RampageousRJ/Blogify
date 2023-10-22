@@ -8,6 +8,7 @@ def load_user(id):
     return Users.query.get(int(id))
  
 class Users(db.Model,UserMixin):
+    __tablename__='users'
     id = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(20),nullable=False,unique=True)
     name = db.Column(db.String(30),nullable=False)
@@ -34,8 +35,17 @@ class Users(db.Model,UserMixin):
         return f"<{self.username}>"
     
 class Post(db.Model):
+    __tablename__='post'
     id = db.Column(db.Integer,primary_key=True)
     title = db.Column(db.String(255))
     content = db.Column(db.Text)
     date_added = db.Column(db.DateTime, default=datetime.utcnow())
     blogger_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    comments = db.relationship('Comment',backref='post',cascade='all,delete')
+    
+class Comment(db.Model):
+    __tablename__='comment'
+    id = db.Column(db.Integer,primary_key=True)
+    content = db.Column(db.Text)
+    date_added = db.Column(db.DateTime, default=datetime.utcnow())
+    post_id = db.Column(db.Integer,db.ForeignKey('post.id'))
