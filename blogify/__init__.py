@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from flask_ckeditor import CKEditor
 from dotenv import load_dotenv
 from flask_mail import Mail
+from flask_moment import Moment
 import os
 load_dotenv()
 app = Flask(__name__)
@@ -26,6 +27,7 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 
 db = SQLAlchemy(app)
+moment = Moment(app)
 login_manager = LoginManager(app)
 login_manager.init_app(app)
 login_manager.login_view = 'login'

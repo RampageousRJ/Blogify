@@ -9,12 +9,15 @@
     <h1 class"text-left"></h1>
     <br>
     <div class="card bg-dark">
+
         <div class="card-header">
             {{ post.title }}
         </div>
+
         <div class="card-body">
           <blockquote class="blockquote mb-0">
             <p>{{ post.content|safe }}</p>
+
             <footer class="blockquote-footer">
                 <cite title="Author name"> 
                   {% if current_user.is_authenticated %}
@@ -22,7 +25,7 @@
                   {% else %}
                     {{ post.blogger.username }}
                   {% endif %}
-                </cite> added on {{ post.date_added }}
+                </cite> added {{ moment(post.date_added).fromNow() }}
                 {% if current_user.is_authenticated %}
                 <hr>
                 <form action="{{url_for('post',id=post.id)}}"  method="POST" class='form-register'>
@@ -40,6 +43,7 @@
                 </form> 
                 {% endif %}
             </footer>
+
           </blockquote>
         </div>
     </div>
@@ -52,6 +56,7 @@
         {% for comment in comments %}
           <div class="card bg-dark">
             <div class="card-body">
+    
               <div class="row d-flex flex-wrap align-items-center">
                 <div class="col-md-8">
                   <p>{{ comment.content|safe }}</p>
@@ -67,14 +72,14 @@
                 {% endif %}
             </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer blockquote-footer">
               <cite title="Author name"> 
                 {% if current_user.is_authenticated %}
                   <a href="{{url_for('blogger',username=comment.blogger.username)}}" style="text-decoration:none; color: grey;">{{ comment.blogger.username }}</a>
                 {% else %}
                   {{ comment.blogger.username }}
                 {% endif %}
-              </cite> added on {{ comment.date_added }}
+              </cite> added {{ moment(comment.date_added).fromNow() }}
             </div>
         </div>
 
