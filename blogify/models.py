@@ -17,7 +17,7 @@ class Users(db.Model,UserMixin):
     date_added = db.Column(db.DateTime,default=datetime.utcnow)
     password_hash = db.Column(db.String(128),nullable=False)
     password_hash2 = db.Column(db.String(128))
-    posts = db.relationship('Post',backref='blogger')
+    posts = db.relationship('Post',backref='blogger',cascade='all,delete')
     
     @property
     def password(self):
