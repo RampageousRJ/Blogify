@@ -49,6 +49,25 @@
     </div>
     <br>
 
+    {# Post Options #}
+    <div class="row">
+      <div class="col-md-4 text-center">
+        <a href="{{url_for('posts')}}" class="btn btn-outline-secondary" >All Posts</a>
+      </div>
+      {% if post.blogger.id==id %}
+      <div class="col-md-4 text-center">
+        <a href="{{url_for('edit_post',id=post.id)}}" class="btn btn-outline-warning">Edit Post</a>
+      </div>
+      <div class="col-md-4 text-center">
+        {% include 'includes/DeleteBlogModal.html' %}
+        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteBlog">Delete Blog</button>
+      </div>
+      {% endif %}
+    </div>
+    <br>
+
+
+    {# Comments for the post #}
     {% if comments.count()!=0 %}
     <br>
     <h3 class"text-center">Comments</h3>
@@ -61,7 +80,7 @@
                 <div class="col-md-8">
                   <p>{{ comment.content|safe }}</p>
                 </div>
-                {% if current_user.id == comment.blogger.id %}
+                {% if current_user.id == comment.blogger.id or current_user.id==comment.post.blogger_id %}
                 <div class="col-md-4 text-right">
                     <div class="btn">
                       <a href="{{url_for('delete_comment',id=comment.id)}}">
@@ -90,20 +109,6 @@
       
     {% endif %}
 
-    <div class="row">
-      <div class="col-md-4 text-center">
-        <a href="{{url_for('posts')}}" class="btn btn-outline-secondary" >All Posts</a>
-      </div>
-      {% if post.blogger.id==id %}
-      <div class="col-md-4 text-center">
-        <a href="{{url_for('edit_post',id=post.id)}}" class="btn btn-outline-warning">Edit Post</a>
-      </div>
-      <div class="col-md-4 text-center">
-        {% include 'includes/DeleteBlogModal.html' %}
-        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteBlog">Delete Blog</button>
-      </div>
-      {% endif %}
-    </div>
-    <br>
+    
     
 {% endblock %}
