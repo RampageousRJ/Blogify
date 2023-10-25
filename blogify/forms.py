@@ -46,3 +46,6 @@ class CommentForm(FlaskForm):
     
 class SubscribeForm(FlaskForm):
     submit = SubmitField("Subscribe")
+
+class LikeForm(FlaskForm):
+    submit = SubmitField("Like")

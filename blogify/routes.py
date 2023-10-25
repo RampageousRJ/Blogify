@@ -135,22 +135,44 @@ def posts():
     posts = Post.query.order_by(Post.date_added.desc())
     return render_template("posts.html",posts=posts)
 
+
 @app.route('/posts/<int:id>',methods=['GET','POST'])
 def post(id):
     post = Post.query.get_or_404(id)
+    
     if current_user.is_authenticated:
         id = current_user.id
     else:
-        id = -999       
+        id = -999     
+          
     form = CommentForm()
+    likeform = LikeForm()
+    
     if form.validate_on_submit():
         comment = Comment(content=form.content.data,post_id=post.id,blogger_id=current_user.id)
         db.session.add(comment)
         db.session.commit()
         flash("Comment added successfully!")
-        return redirect(url_for('post',id=post.id)) 
+        return redirect(url_for('post',id=post.id))
+    
+    AlreadyLiked = LikedPost.query.filter_by(blogger_id=current_user.id).filter_by(post_id=post.id).first()
+    print(AlreadyLiked)
+    if likeform.validate_on_submit():
+        if AlreadyLiked:
+            db.session.delete(AlreadyLiked)
+            db.session.commit()
+            return redirect(url_for('post',id=post.id))
+        like_to_add = LikedPost(blogger_id=current_user.id,post_id=post.id)
+        db.session.add(like_to_add)
+        db.session.commit()
+        return redirect(url_for('post',id=post.id))
+    
     comments = Comment.query.filter_by(post_id=post.id)
-    return render_template('post.html',post=post,id=id,form=form,comments=comments)
+    likes = LikedPost.query.filter_by(post_id=post.id).count()
+    if AlreadyLiked:
+        return render_template('post.html',post=post,id=id,form=form,comments=comments,likes=likes,likeform=likeform,Liked=True)
+    return render_template('post.html',post=post,id=id,form=form,comments=comments,likes=likes,likeform=likeform,Liked=False)
+
 
 @app.route('/posts/edit/<int:id>',methods=['GET','POST'])
 @login_required
@@ -211,10 +233,9 @@ def login():
 @app.route('/dashboard',methods=['GET','POST'])
 @login_required
 def dashboard():
-    posts = Post.query.filter_by(blogger_id=current_user.id)
+    posts = Post.query.filter_by(blogger_id=current_user.id).order_by(Post.date_added.desc())
     subscribers = Subscriber.query.filter_by(following=current_user.id).count()
     return render_template('dashboard.html',posts=posts,subscribers=subscribers)
-
 
 @app.route('/logout',methods=['GET','POST'])
 @login_required

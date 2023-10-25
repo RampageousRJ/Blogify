@@ -11,7 +11,37 @@
     <div class="card bg-dark">
 
         <div class="card-header">
-            {{ post.title }}
+          <div class="container">
+            <div class="row d-flex flex-wrap align-items-center">
+              <div class="col-md-6">
+                {{ post.title }}
+              </div>
+              <div class="col-md-6 text-right" >
+                <div class="container">
+                  <div class="row d-flex flex-wrap align-items-center">
+                    <div class="col-md-10"></div>
+                    <div class="col-md-1 text-right">
+                      <form action=""  method="POST" class='form-register'>
+                        {{form.hidden_tag()}}
+                        <button type="submit" class="btn">
+                          <a href="#" class="hvr-icon-shrink" method>
+                            {% if Liked==False %}
+                              <img src="{{url_for('static',filename='images/like.png')}}" alt="Like" class="hvr-icon" style="padding-bottom: 10%;">
+                            {% else %}
+                              <img src="{{url_for('static',filename='images/dislike.png')}}" alt="Dislike" class="hvr-icon" style="padding-bottom: 10%;">
+                            {% endif %}
+                          </a>
+                        </button>
+                      </form>
+                    </div>
+                    <div class="col-md-1 text-left">
+                      {{ likes }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="card-body">
@@ -83,8 +113,8 @@
                 {% if current_user.id == comment.blogger.id or current_user.id==comment.post.blogger_id %}
                 <div class="col-md-4 text-right">
                     <div class="btn">
-                      <a href="{{url_for('delete_comment',id=comment.id)}}">
-                        <img src="{{url_for('static',filename='images/trash.png')}}" alt="" style="max-width: 100%;">
+                      <a href="{{url_for('delete_comment',id=comment.id)}}" class="hvr-icon-shrink">
+                        <img src="{{url_for('static',filename='images/trash.png')}}" alt="" style="max-width: 100%;" class="hvr-icon">
                       </a>
                     </div>
                 </div>

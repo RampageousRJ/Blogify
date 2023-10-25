@@ -20,6 +20,7 @@ class Users(db.Model,UserMixin):
     password_hash2 = db.Column(db.String(128))
     posts = db.relationship('Post',backref='blogger',cascade='all,delete')
     comments = db.relationship('Comment',backref='blogger',cascade='all,delete')
+    likes = db.relationship('LikedPost',backref='blogger',cascade='all,delete')
     
     @property
     def password(self):
@@ -43,6 +44,7 @@ class Post(db.Model):
     date_added = db.Column(db.DateTime, default=datetime.utcnow())
     blogger_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     comments = db.relationship('Comment',backref='post',cascade='all,delete')
+    likes = db.relationship('LikedPost',backref='like',cascade='all,delete')
     
 class Comment(db.Model):
     __tablename__='comment'
@@ -52,8 +54,15 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer,db.ForeignKey('post.id'))
     blogger_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     
+class LikedPost(db.Model):
+    __tablename__='like'
+    id = db.Column(db.Integer,primary_key=True)
+    post_id = db.Column(db.Integer,db.ForeignKey('post.id'))
+    blogger_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    
 class Subscriber(db.Model):
     __tablename__='subscriber'
     id = db.Column(db.Integer,primary_key=True)
     follower = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
     following = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
+    
