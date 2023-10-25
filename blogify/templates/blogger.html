@@ -41,10 +41,16 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col text-left">
-                    <a href="#" class="btn btn-danger">Subscribe</a>
+                    <form method="POST" class='form-register'>
+                        {{ form.hidden_tag() }}
+                        {% if status=="danger" %}
+                            {{ form.submit(class = 'btn btn-danger') }}
+                        {% else %}
+                            {{ form.submit(class = 'btn btn-secondary',value="Unsubscribe") }}
+                        {% endif %}
+                    </form>
                 </div>
             </div>
-            
         </div>
         
     </div>

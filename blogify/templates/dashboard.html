@@ -14,7 +14,8 @@
             <div clas="container">
                 <div class="row">
                     <div class="col-md-6">
-                        <h4>{{ current_user.username }}</h4>
+                        <h4 style="margin: 0;">{{ current_user.username }}</h4>
+                        <small><em>{{subscribers}} Subscribers</em></small>
                     </div>
 
                     {% include 'includes/DeleteUserModal.html' %}     

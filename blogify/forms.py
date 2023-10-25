@@ -43,3 +43,6 @@ class FeedbackForm(FlaskForm):
 class CommentForm(FlaskForm):
     content = StringField("Add comment...",validators=[DataRequired()])
     submit = SubmitField("Comment")
+    
+class SubscribeForm(FlaskForm):
+    submit = SubmitField("Subscribe")

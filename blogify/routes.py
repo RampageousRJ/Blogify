@@ -204,7 +204,8 @@ def login():
 @login_required
 def dashboard():
     posts = Post.query.filter_by(blogger_id=current_user.id)
-    return render_template('dashboard.html',posts=posts)
+    subscribers = Subscriber.query.filter_by(following=current_user.id).count()
+    return render_template('dashboard.html',posts=posts,subscribers=subscribers)
 
 
 @app.route('/logout',methods=['GET','POST'])
@@ -237,6 +238,7 @@ def feedback():
     return render_template('feedback.html',form=form)  
 
 @app.route("/blogger/<string:username>",methods=['GET','POST'])
+@login_required
 def blogger(username):
     if username==current_user.username:
         return redirect(url_for('dashboard'))
@@ -244,8 +246,22 @@ def blogger(username):
     if not blogger:
         return render_template('404.html'), 404
     posts = Post.query.filter_by(blogger_id=blogger.id)
-    print(posts.count())
-    return render_template('blogger.html',posts=posts,blogger=blogger)
+    form=SubscribeForm()
+    sub = Subscriber.query.filter_by(follower=current_user.id).filter_by(following=blogger.id).first()
+    if request.method=='POST':
+        if sub:
+            db.session.delete(sub)
+            db.session.commit()
+            flash("Unsubscribed Successfully!")
+            return redirect(url_for('blogger',username=username))
+        subscription = Subscriber(follower=current_user.id,following=blogger.id)
+        db.session.add(subscription)
+        db.session.commit()
+        flash("Subscribed Successfully!")
+        return redirect(url_for('blogger',username=username))
+    if sub:
+        return render_template('blogger.html',posts=posts,blogger=blogger,form=form,status="secondary")
+    return render_template('blogger.html',posts=posts,blogger=blogger,form=form,status="danger")
 
 @app.route('/comment/delete/<int:id>')
 @login_required

@@ -51,3 +51,9 @@ class Comment(db.Model):
     date_added = db.Column(db.DateTime, default=datetime.utcnow())
     post_id = db.Column(db.Integer,db.ForeignKey('post.id'))
     blogger_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    
+class Subscriber(db.Model):
+    __tablename__='subscriber'
+    id = db.Column(db.Integer,primary_key=True)
+    follower = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
+    following = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
