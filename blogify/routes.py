@@ -156,7 +156,6 @@ def post(id):
         return redirect(url_for('post',id=post.id))
     
     AlreadyLiked = LikedPost.query.filter_by(blogger_id=current_user.id).filter_by(post_id=post.id).first()
-    print(AlreadyLiked)
     if likeform.validate_on_submit():
         if AlreadyLiked:
             db.session.delete(AlreadyLiked)
@@ -170,8 +169,8 @@ def post(id):
     comments = Comment.query.filter_by(post_id=post.id)
     likes = LikedPost.query.filter_by(post_id=post.id).count()
     if AlreadyLiked:
-        return render_template('post.html',post=post,id=id,form=form,comments=comments,likes=likes,likeform=likeform,Liked=True)
-    return render_template('post.html',post=post,id=id,form=form,comments=comments,likes=likes,likeform=likeform,Liked=False)
+        return render_template('post.html',post=post,id=id,form=form,comments=comments,likes=likes,Liked=True)
+    return render_template('post.html',post=post,id=id,form=form,comments=comments,likes=likes,Liked=False)
 
 
 @app.route('/posts/edit/<int:id>',methods=['GET','POST'])

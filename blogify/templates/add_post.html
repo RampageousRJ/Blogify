@@ -4,10 +4,54 @@
   Add Blog
 {% endblock %}
 
+{% block additional_links %}
+  <link rel="stylesheet" href="{{url_for('static',filename='css/add_post.css')}}">
+{% endblock %}
+
 {% block body %}
     <br />
         <div class="row">
-            <div class="col-md-2"></div>
+            <div class="col-md-2 text-center">
+                <div class="main-container">
+                    <div class="radio-buttons">
+                        <div class="card">
+                            <label>
+                                <input type="radio" name="radio" checked>
+                                <span class="radio-btn">
+                                    Biking
+                                </span>
+                              </label>
+                        </div>
+                        <br>
+                        <div class="card">
+                            <label>
+                                <input type="radio" name="radio" >
+                                <span class="radio-btn">
+                                    Literature
+                                </span>
+                            </label>
+                        </div>
+                        <br>
+                        <div class="card">
+                            <label>
+                                <input type="radio" name="radio" >
+                                <span class="radio-btn">
+                                    Music
+                                </span>
+                              </label>
+                        </div>
+                        <br>
+                        <div class="card">
+                            <label>
+                                <input type="radio" name="radio" >
+                                <span class="radio-btn">
+                                    Science
+                                </span>
+                              </label>
+                        </div>
+                    </div>
+                  </div>
+            </div>
             <div class="col-md-8 shadow p-3 bg-dark rounded">
                 <h3 class="text-center">Add Blog Post</h3>
                 <form method="POST" class='form-register'>

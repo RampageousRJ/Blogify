@@ -42,6 +42,7 @@ class Post(db.Model):
     title = db.Column(db.String(255))
     content = db.Column(db.Text)
     date_added = db.Column(db.DateTime, default=datetime.utcnow())
+    category = db.Column(db.String(255),default="")
     blogger_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     comments = db.relationship('Comment',backref='post',cascade='all,delete')
     likes = db.relationship('LikedPost',backref='like',cascade='all,delete')

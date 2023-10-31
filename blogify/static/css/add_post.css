@@ -1,0 +1,45 @@
+body 
+{
+  font-family: Raleway, sans-serif;
+}
+.main-container 
+{
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.radio-buttons 
+{
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.card input 
+{
+  display: none;
+}
+
+.card{
+    background-color: black;
+}
+
+.radio-btn 
+{
+  margin: 5%;
+  border: 2px solid transparent;
+  display: block;
+  border-radius: 2.5%;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 0 20px #c3c3c367;
+  cursor: pointer;
+}
+
+input:checked + .radio-btn 
+{
+  border: 2px solid #FFDAE9;
+}
