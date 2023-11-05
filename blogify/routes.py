@@ -122,7 +122,7 @@ def add_post():
     id = current_user.id
     form  = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data,content=form.content.data,blogger_id=id)
+        post = Post(title=form.title.data,content=form.content.data,blogger_id=id,category=request.form['radio'])
         db.session.add(post)
         db.session.commit()
         flash("Blog Post added successfully!")
@@ -130,7 +130,7 @@ def add_post():
         return redirect(url_for('posts'))
     return render_template('add_post.html',form=form)
 
-@app.route('/posts')
+@app.route('/posts',methods=['GET','POST'])
 def posts():
     posts = Post.query.order_by(Post.date_added.desc())
     return render_template("posts.html",posts=posts)
@@ -252,6 +252,14 @@ def search():
         posts = posts.filter(Post.title.like("%"+searched_value+"%"))
         posts = posts.order_by(Post.title).all()
         return render_template('search.html',form=form, searched=searched_value,posts=posts)
+    return render_template('search.html',form=form, search="NONE")
+
+@app.route('/search/category=<string:category>',methods=['GET','POST'])
+def search_by_category(category):
+    searched = "CATEGORY: "+category
+    posts = Post.query.filter_by(category=category)
+    posts = posts.order_by(Post.title).all()
+    return render_template('search.html', searched=searched,posts=posts)
     return render_template('search.html',form=form, search="NONE")
 
 @app.route('/feedback',methods=['GET','POST'])

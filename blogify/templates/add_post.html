@@ -9,72 +9,168 @@
 {% endblock %}
 
 {% block body %}
-    <br />
+    <br>
+    <form method="POST" class='form-register'>
         <div class="row">
-            <div class="col-md-2 text-center">
-                <div class="main-container">
-                    <div class="radio-buttons">
+            <div class="col-md-2 text-center" style="background-color: #B3B3B3;">
+                <h4 style="padding: 5% 0 5% 0; font-family: Monocraft;">General</h4>
+                <div class="radio-buttons">
                         <div class="card">
                             <label>
-                                <input type="radio" name="radio" checked>
+                                <input type="radio" name="radio" value="Miscellaneous" checked>
                                 <span class="radio-btn">
-                                    Biking
+                                    Miscellaneous
                                 </span>
                               </label>
                         </div>
                         <br>
                         <div class="card">
                             <label>
-                                <input type="radio" name="radio" >
+                                <input type="radio" name="radio" value="Adventure">
                                 <span class="radio-btn">
-                                    Literature
+                                    Adventure
+                                </span>
+                              </label>
+                        </div>
+                        <br>
+                        <div class="card">
+                            <label>
+                                <input type="radio" name="radio" value="Sports">
+                                <span class="radio-btn">
+                                    Sports
                                 </span>
                             </label>
                         </div>
                         <br>
                         <div class="card">
                             <label>
-                                <input type="radio" name="radio" >
+                                <input type="radio" name="radio" value="Rant">
                                 <span class="radio-btn">
-                                    Music
+                                    Rant
+                                </span>
+                              </label>
+                        </div>
+                        <br>    
+                        <div class="card">
+                            <label>
+                                <input type="radio" name="radio" value="Fashion">
+                                <span class="radio-btn">
+                                    Fashion
+                                </span>
+                              </label>
+                        </div>
+                        <br>    
+                        <div class="card">
+                            <label>
+                                <input type="radio" name="radio" value="Question">
+                                <span class="radio-btn">
+                                    Question
+                                </span>
+                              </label>
+                        </div>
+                        <br>    
+                        <div class="card">
+                            <label>
+                                <input type="radio" name="radio" value="Manipal">
+                                <span class="radio-btn">
+                                    Manipal
+                                </span>
+                              </label>
+                        </div>
+                        <br>
+                  </div>
+            </div>
+            <div class="col-md-8 shadow p-3 bg-dark rounded">
+                <br>
+                <h3 class="text-center">Add Blog Post</h3>
+                <div class="form-labels">
+                    {{form.hidden_tag()}}
+                    {{form.title.label()}}
+                    {{form.title(class='form-control', placeholder='Title')}}
+                    <br>
+                    {{form.content.label()}}
+                    {{form.content(class='form-control',rows=5, placeholder='Content')}}
+                    <br>
+                    
+                    {% include 'includes/AddBlogModal.html' %}
+                    <div class="form-group text-center">
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addBlog">
+                            Add Blog
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 text-center" style="background-color: #B3B3B3;">
+                <h4 style="padding: 5% 0 5% 0; font-family: Monocraft;">Coding</h4>
+                <div class="radio-buttons">
+                        <div class="card">
+                            <label>
+                                <input type="radio" name="radio" value="Web Development">
+                                <span class="radio-btn">
+                                    Web Development
                                 </span>
                               </label>
                         </div>
                         <br>
                         <div class="card">
                             <label>
-                                <input type="radio" name="radio" >
+                                <input type="radio" name="radio" value="DSA">
                                 <span class="radio-btn">
-                                    Science
+                                    DSA
                                 </span>
                               </label>
                         </div>
-                    </div>
+                        <br>
+                        <div class="card">
+                            <label>
+                                <input type="radio" name="radio" value="Python">
+                                <span class="radio-btn">
+                                    Python
+                                </span>
+                            </label>
+                        </div>
+                        <br>
+                        <div class="card">
+                            <label>
+                                <input type="radio" name="radio" value="Open Source">
+                                <span class="radio-btn">
+                                    Open Source
+                                </span>
+                              </label>
+                        </div>
+                        <br>    
+                        <div class="card">
+                            <label>
+                                <input type="radio" name="radio" value="Networking">
+                                <span class="radio-btn">
+                                    Networking
+                                </span>
+                              </label>
+                        </div>
+                        <br>    
+                        <div class="card">
+                            <label>
+                                <input type="radio" name="radio" value="Databases">
+                                <span class="radio-btn">
+                                    Databases
+                                </span>
+                              </label>
+                        </div>
+                        <br>    
+                        <div class="card">
+                            <label>
+                                <input type="radio" name="radio" value="Testing">
+                                <span class="radio-btn">
+                                    Testing
+                                </span>
+                              </label>
+                        </div>
+                        <br>
                   </div>
             </div>
-            <div class="col-md-8 shadow p-3 bg-dark rounded">
-                <h3 class="text-center">Add Blog Post</h3>
-                <form method="POST" class='form-register'>
-                    <div class="form-labels">
-                        {{form.hidden_tag()}}
-                        {{form.title.label()}}
-                        {{form.title(class='form-control', placeholder='Title')}}
-                        <br>
-                        {{form.content.label()}}
-                        {{form.content(class='form-control',rows=5, placeholder='Content')}}
-                        <br>
-                        
-                        {% include 'includes/AddBlogModal.html' %}
-                        <div class="form-group text-center">
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addBlog">
-                                Add Blog
-                            </button>
-                        </div>
-                    </div> 
-                </form>
-            </div>
         </div>
-        {{ckeditor.load()}}
-        {{ckeditor.config(name='content')}}
+    </form>
+    {{ckeditor.load()}}
+    {{ckeditor.config(name='content')}}
     <br />
 {% endblock %}
