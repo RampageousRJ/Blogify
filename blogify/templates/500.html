@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Interal Server Error
+  Internal Server Error
+{% endblock %}
+
+{% block additional_links %}
+  <link rel="stylesheet" href="{{url_for('static',filename='css/error.css')}}">
 {% endblock %}
 
 {% block body %}
-  <center>
-    <h1>Internal Server Error: ERROR 500</h1>
-  </center>
+<div class="page">
+  <div title="404">500: Internal Server Error</div>
+  
+</div>
 {% endblock %}
+
+  

@@ -4,9 +4,15 @@
   Page Not Found
 {% endblock %}
 
-{% block body %}
-  <center>
-    <h1>Page Not Found: ERROR 404</h1>
-    <h2>Try a different URL...</h2> 
-  </center>
+{% block additional_links %}
+  <link rel="stylesheet" href="{{url_for('static',filename='css/error.css')}}">
 {% endblock %}
+
+{% block body %}
+<div class="page">
+  <div title="404">404: Page Not Found</div>
+  
+</div>
+{% endblock %}
+
+  
