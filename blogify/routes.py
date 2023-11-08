@@ -260,7 +260,6 @@ def search_by_category(category):
     posts = Post.query.filter_by(category=category)
     posts = posts.order_by(Post.title).all()
     return render_template('search.html', searched=searched,posts=posts)
-    return render_template('search.html',form=form, search="NONE")
 
 @app.route('/feedback',methods=['GET','POST'])
 @login_required
