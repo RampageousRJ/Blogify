@@ -6,9 +6,41 @@
 
 {% block body %}
 
-    <h1 class"text-left">Blogs</h1>
-    <br>
+    
     <div class="container">
+      <div class="row d-flex flex-wrap align-items-center">
+        <div class="col-md-1">
+          <div class="dropdown show text-left">
+            <a class="btn btn-secondary dropdown-toggle bg-dark" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Filter By
+            </a>
+          
+            <div class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="{{url_for('filter',time_selected='week')}}" style="color: grey;">Past Week</a>
+              <a class="dropdown-item" href="{{url_for('filter',time_selected='month')}}" style="color: grey;">Past Month</a>
+              <a class="dropdown-item" href="{{url_for('filter',time_selected='year')}}" style="color: grey;">Past Year</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-10 text-center">
+          <h1>Blogs</h1>
+        </div>
+      </div>
+      <br>
+      {% if filtered_by %}
+        <div class="row d-flex flex-wrap align-items-center">
+          <div class="col text-left">
+            <span >Filtered By: {{ filtered_by }}</span>
+          </div>
+          <div class="col text-right">
+            <a href="{{url_for('posts')}}" style="text-decoration:none;">Reset Filters</a>
+          </div>
+        </div>
+        <br>
+        
+      {% endif %}
+
+
       {% for post in posts %}
     <div class="card bg-dark">
         <div class="card-header">

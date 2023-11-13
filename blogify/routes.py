@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user,login_required,logout_user,current_user
 from flask_mail import Message
 from random import randint
+from datetime import datetime,timedelta
 import re
 import os
 load_dotenv()
@@ -315,6 +316,22 @@ def delete_comment(id):
     except:
         flash("Error! Comment could not be deleted!")
         return redirect(url_for('post',id=post_id))
+    
+@app.route('/posts/filter/<string:time_selected>')
+def filter(time_selected):
+    if time_selected=='week':
+        minus_days=-7
+        filtered_by='Past Week'
+    elif time_selected=='month':
+        minus_days=-30
+        filtered_by='Past Month'
+    elif time_selected=='year':
+        minus_days=-365
+        filtered_by='Past Year'
+    else:
+        return render_template('404.html'), 404
+    posts=db.session.query(Post).filter(Post.date_added>(datetime.now()+timedelta(days=minus_days))).order_by(Post.date_added.desc())
+    return render_template('posts.html',posts=posts,filtered_by=filtered_by)
     
 # Page Not Found
 @app.errorhandler(404)
