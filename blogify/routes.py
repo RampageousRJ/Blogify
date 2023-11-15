@@ -18,10 +18,12 @@ def validEmail(email_text):
 
 def mailSubscribers(id,title):
     subscribers = Subscriber.query.filter_by(following=id)
+    recipients=[]
     for subscriber in subscribers:
         user_mail = Users.query.filter_by(id=subscriber.follower).first().email
-        msg = Message(f"{current_user.username} Posted!",body=f"Your favourite user {current_user.username} has recently posted about {title}! Head over to Blogify to see more!\nwww.blogify.com",sender=('Blogify','automailer.0123@gmail.com'),recipients=[user_mail])
-        mail.send(msg)
+        recipients.append(user_mail)
+    msg = Message(f"{current_user.username} Posted!",body=f"Your favourite user {current_user.username} has recently posted about {title}! Head over to Blogify to see more!\nwww.blogify.com",sender=('Blogify','automailer.0123@gmail.com'),recipients=recipients)
+    mail.send(msg)
         
 @app.context_processor
 def base():
