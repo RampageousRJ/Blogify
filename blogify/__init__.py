@@ -16,7 +16,6 @@ app = Flask(__name__)
 # NEW MySQL DB
 app.config['SQLALCHEMY_DATABASE_URI']=os.getenv("DATABASE_URI")
 app.config['SECRET_KEY']=os.getenv("SECRET_KEY")
-app.config['SECRET_KEY']=os.getenv("SECRET_KEY")
 app.config['RECAPTCHA_PUBLIC_KEY'] = os.getenv('BLOGIFY_PUBLIC_KEY')
 app.config['RECAPTCHA_PRIVATE_KEY'] = os.getenv('BLOGIFY_PRIVATE_KEY')
 app.config['MAIL_SERVER']='smtp.gmail.com'
