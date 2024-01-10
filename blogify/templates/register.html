@@ -31,14 +31,20 @@
                             {{form.password_hash2(class='form-control', placeholder='Re-Type Password')}}
                             <br>
                             <br>
-                            {{form.recaptcha(class='form-control', placeholder='Recaptcha')}}
+                            <div class="row">
+                                <div class="col"></div>
+                                <div class="col">
+                                    {{form.recaptcha(class='form-control', placeholder='Recaptcha')}}
+                                </div>
+                                <div class="col"></div>
+                            </div>
                             <br>
                             <div class="form-group text-center">
                                 {{ form.submit(class = 'btn btn-success') }}
                                 <br>
                             </div>
                             <div class="form-group" style="text-align:center">
-                                <h6>Already have an account? <a href="{{url_for('login')}}">Login Here</a></h6>
+                                <h6>Already have an account? <a href="{{url_for('login')}}" style="text-decoration: none;">Login Here</a></h6>
                             </div>
                         </div>
                     </form>

@@ -26,6 +26,12 @@ class LoginForm(FlaskForm):
     recaptcha = RecaptchaField()
     submit = SubmitField('Submit')
     
+class ForgotPasswordForm(FlaskForm):
+    username = StringField("Username",validators=[DataRequired()])
+    email = EmailField("Email",validators=[DataRequired()])
+    recaptcha = RecaptchaField()
+    submit = SubmitField('Send OTP')
+    
 class SearchForm(FlaskForm):
     searched = StringField("Searched",validators=[DataRequired()])
     submit = SubmitField("Submit")

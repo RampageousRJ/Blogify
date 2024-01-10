@@ -55,7 +55,7 @@ def register():
         os.environ['NEW_USERNAME']=form.username.data
         
         os.environ['OTP']=str(randint(100000,999999))
-        msg = Message("OTP Verficiation",body=f"Use this OTP to verify your email address for Blogify! \n\n{os.getenv('OTP')}",sender=('Blogify','automailer.0123@gmail.com'),recipients=[form.email.data.strip()])
+        msg = Message("OTP Verificiation",body=f"Use this OTP to verify your email address for Blogify! \n\n{os.getenv('OTP')}",sender=('Blogify','automailer.0123@gmail.com'),recipients=[form.email.data.strip()])
         mail.send(msg)
         flash("OTP sent!")
         form.name.data = ""
@@ -333,6 +333,32 @@ def filter(time_selected):
     posts=db.session.query(Post).filter(Post.date_added>(datetime.now()+timedelta(days=minus_days))).order_by(Post.date_added.desc())
     return render_template('posts.html',posts=posts,filtered_by=filtered_by)
     
+@app.route('/forgot-password',methods=['GET','POST'])
+def forgot_password():
+    form = ForgotPasswordForm()
+    if request.method == 'POST':
+        user = Users.query.filter_by(email=form.email.data).first()
+        if user:
+            if user.username == form.username.data:
+                form.username.data,form.email.data = "",""
+                otp = str(randint(100000,999999))
+                os.environ['OTP'] = otp
+                msg = Message("OTP Verificiation",body=f"Use this OTP to generate a random new password for Blogify! \n\n{otp}",sender=('Blogify','automailer.0123@gmail.com'),recipients=[form.email.data.strip()])
+                mail.send(msg)
+                flash("OTP sent!")
+                print(otp)
+                return redirect('otp_validate')
+            else:
+                flash("Email and username does not match! Try again!")  
+        else:
+            flash("Email does not exist!")    
+    return render_template('forgot_password.html',form=form)
+    
+@app.route('/otp-validate',methods=['GET','POST'])
+def otp_validate():
+    form = OTPForm() 
+    return render_template('otp.html',form=form)
+
 # Page Not Found
 @app.errorhandler(404)
 def page_not_found(e):
